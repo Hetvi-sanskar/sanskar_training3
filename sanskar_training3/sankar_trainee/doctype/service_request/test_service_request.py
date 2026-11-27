@@ -16,5 +16,3 @@ class IntegrationTestServiceRequest(IntegrationTestCase):
     Integration tests for ServiceRequest.
     Use this class for testing interactions between multiple components.
     """
-
-    pass
