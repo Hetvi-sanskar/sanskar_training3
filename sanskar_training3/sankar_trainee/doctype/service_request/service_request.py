@@ -41,3 +41,21 @@ class ServiceRequest(Document):
     def after_insert(self):
         # runs only once, when the document is first created
         frappe.msgprint(_("Service Request {0} created").format(self.name))
+
+    def on_update(self):
+        # runs after every successful save
+        if self.has_value_changed("status"):
+            frappe.log_error(
+                title="Service Request status changed",
+                message=f"{self.name} is now {self.status}",
+            )
+
+    def before_submit(self):
+        if not self.assigned_to:
+            frappe.throw(_("Assign the request to an Employee before submitting"))
+
+    def on_submit(self):
+        frappe.msgprint(_("Service Request {0} submitted").format(self.name))
+
+    def on_cancel(self):
+        frappe.msgprint(_("Service Request {0} cancelled").format(self.name))
